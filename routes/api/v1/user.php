@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 /**
  * Start Helper EndPoints
  */
-Route::namespace('Helper')->group(function () {
+Route::namespace('App\Http\Controllers\Api\V1\User\Helper')->group(function () {
     Route::get('countries', 'CountryController@index');
     Route::get('parcel_categories', 'ParcelCategoryController@index');
     Route::get('packages', 'PackageController@index');
@@ -20,7 +20,7 @@ Route::namespace('Helper')->group(function () {
 /**
  * Start Authentication EndPoints
  */
-Route::namespace('Auth')->group(function () {
+Route::namespace('App\Http\Controllers\Api\V1\User\Auth')->prefix('user')->group(function () {
     Route::post('register', 'AuthController@register');
     Route::post('complete_data', 'AuthController@complete_data')->middleware('auth:user');
     Route::post('send_otp', 'AuthController@send_otp');
@@ -37,7 +37,7 @@ Route::namespace('Auth')->group(function () {
  /**
  * Start User EndPoints
  */
-Route::namespace('User')->middleware('auth:user')->group(function () {
+Route::namespace('App\Http\Controllers\Api\V1\User\User')->prefix('user')->middleware('auth:user')->group(function () {
     Route::get('profile', 'UserController@profile');
     Route::post('update_profile', 'UserController@update_profile');
     Route::post('change_password', 'UserController@change_password');
@@ -50,7 +50,7 @@ Route::namespace('User')->middleware('auth:user')->group(function () {
   /**
  * Start Address EndPoints
  */
-Route::namespace('Address')->middleware('auth:user')->group(function () {
+Route::namespace('App\Http\Controllers\Api\V1\User\Address')->middleware('auth:user')->group(function () {
     Route::apiResource('addresses', 'AddressController');
 });
 /**
@@ -61,7 +61,7 @@ Route::namespace('Address')->middleware('auth:user')->group(function () {
    /**
  * Start Order EndPoints
  */
-Route::namespace('Order')->middleware('auth:user')->group(function () {
+Route::namespace('App\Http\Controllers\Api\V1\User\Order')->middleware('auth:user')->group(function () {
     Route::apiResource('orders', 'OrderController')->except('update');
     Route::post('orders/{id}/cancel', 'OrderController@cancel');
 });
