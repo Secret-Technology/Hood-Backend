@@ -60,6 +60,7 @@ return new class extends Migration
             $table->string('lng')->nullable();
 
             $table->foreignId('country_id')->nullable()->references('id')->on('countries')->onDelete('cascade');
+            $table->foreignId('package_id')->nullable()->references('id')->on('packages')->onDelete('cascade');
 
             $table->rememberToken();
             $table->timestamps();

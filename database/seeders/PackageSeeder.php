@@ -16,7 +16,8 @@ class PackageSeeder extends Seeder
         Package::create([
             'name' => [
                 'ar' => 'سيارة',
-                'en' => 'Car'
+                'en' => 'Car',
+                'en' => 'گاڑی',
             ],
             'is_active' => true,
             'is_parcel' => false,
@@ -26,7 +27,8 @@ class PackageSeeder extends Seeder
         Package::create([
             'name' => [
                 'ar' => 'دراجة',
-                'en' => 'Bike'
+                'en' => 'Bike',
+                'en' => 'موٹر سائیکل',
             ],
             'is_active' => true,
             'is_parcel' => false,
@@ -36,7 +38,8 @@ class PackageSeeder extends Seeder
         Package::create([
             'name' => [
                 'ar' => 'بضائع',
-                'en' => 'Parcel'
+                'en' => 'Parcel',
+                'ur' => 'سامان'
             ],
             'is_active' => true,
             'is_parcel' => true,
@@ -46,7 +49,8 @@ class PackageSeeder extends Seeder
         Package::create([
             'name' => [
                 'ar' => 'سيارة فارهه',
-                'en' => 'Luxury'
+                'en' => 'Luxury',
+                'en' => 'لگژری کار',
             ],
             'is_active' => true,
             'is_parcel' => false,

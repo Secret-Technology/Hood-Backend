@@ -59,6 +59,8 @@ return new class extends Migration
             $table->string('lat')->nullable();
             $table->string('lng')->nullable();
 
+            $table->string('wallet')->nullable()->default(0);
+
             $table->foreignId('country_id')->nullable()->references('id')->on('countries')->onDelete('cascade');
 
             $table->rememberToken();

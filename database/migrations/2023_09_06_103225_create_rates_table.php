@@ -11,18 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_addresses', function (Blueprint $table) {
+        Schema::create('rates', function (Blueprint $table) {
             $table->id();
-            $table->text('from')->nullable();
-            $table->text('to')->nullable();
-
-            $table->longText('extra_routes')->nullable();
-
-            $table->foreignId('from_address_id')->nullable()->references('id')->on('addresses')->onDelete('cascade');
-            $table->foreignId('to_address_id')->nullable()->references('id')->on('addresses')->onDelete('cascade');
-
+            $table->foreignId('driver_id')->nullable()->references('id')->on('drivers')->onDelete('cascade');
             $table->foreignId('order_id')->nullable()->references('id')->on('orders')->onDelete('cascade');
-
+            $table->foreignId('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
+            $table->string('rate')->default(0);
+            $table->text('review')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_addresses');
+        Schema::dropIfExists('rates');
     }
 };

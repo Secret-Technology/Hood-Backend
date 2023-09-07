@@ -38,7 +38,7 @@ class OrderAddress extends Model
             $new_routes = [];
             if (is_array($routes)) {
                 foreach ($routes as $route) {
-                    $new_routes[] = ['lat' => (float) @$route['lat'], 'lng' => (float) @$route['lng'], 'location' => (float) @$route['location']];
+                    $new_routes[] = ['lat' => @$route['lat'], 'lng' => @$route['lng'], 'location' => @$route['location']];
                 }
             }
             return array_reverse($new_routes);
