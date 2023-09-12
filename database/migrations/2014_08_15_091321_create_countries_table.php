@@ -13,15 +13,25 @@ return new class extends Migration
     {
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
+            $table->string('capital')->nullable();
+            $table->string('citizenship')->nullable();
+            $table->string('country_code')->nullable();
+            $table->string('currency')->nullable();
+            $table->string('currency_code')->nullable();
+            $table->string('currency_sub_unit')->nullable();
+            $table->string('full_name')->nullable();
+            $table->string('iso_3166_2')->nullable();
+            $table->string('iso_3166_3')->nullable();
             $table->string('name')->nullable();
-            $table->string('phone_code', 255)->nullable();
-            $table->integer('phone_min_length')->default(0);
-            $table->integer('phone_max_length')->default(0);
-            $table->string('code', 255)->nullable();
-            $table->string('currency_name')->nullable();
+            $table->string('region_code')->nullable();
+            $table->string('sub_region_code')->nullable();
+            $table->boolean('eea')->default(false);
+            $table->string('phone_code')->nullable();
             $table->string('currency_symbol')->nullable();
-            $table->string('img', 255)->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->string('currency_decimals')->nullable();
+            $table->string('flag')->nullable();
+            $table->boolean('minLength')->default(0);
+            $table->boolean('maxLength')->default(0);
             $table->timestamps();
         });
     }

@@ -47,4 +47,15 @@ class Country extends Model
         }
         return asset('storage/files/' . $this->uploadPath('img') . $value);
     }
+
+    /**
+     * Get all the countries from the JSON file.
+     *
+     * @return array
+     */
+    public static function allJSON()
+    {
+        $route = dirname(dirname(__FILE__)) . '/Helpers/Countries/countries.json';
+        return json_decode(file_get_contents($route), true);
+    }
 }

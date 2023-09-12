@@ -10,7 +10,8 @@ class CountryController extends Controller
 {
     public function index()
     {
-        $countries = Country::active()->latest()->get();
+        $countries = Country::latest()->get();
+        // $countries = Country::active()->latest()->get();
         return CountryResource::collection($countries)->additional(['status' => 200, 'message' => null]);
     }
 }
