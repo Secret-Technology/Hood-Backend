@@ -26,6 +26,7 @@ Route::middleware('current_locale')->group(function () {
         Route::post('complete_data', 'AuthController@complete_data')->middleware('auth:user');
         Route::post('send_otp', 'AuthController@send_otp');
         Route::post('check_code','AuthController@checkCode');
+
         Route::post('verify_phone', 'AuthController@verify_phone');
         Route::post('login', 'AuthController@login');
         Route::post('login_with_otp', 'AuthController@login_with_otp');
