@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\User\Auth\CompleteData;
 use App\Http\Requests\Api\V1\User\Auth\Login;
 use App\Http\Requests\Api\V1\User\Auth\LoginWithOtp;
+use App\Http\Requests\Api\V1\User\Auth\CheckCode;
 use App\Http\Requests\Api\V1\User\Auth\Register;
 use App\Http\Requests\Api\V1\User\Auth\SendOtp;
 use App\Http\Requests\Api\V1\User\Auth\VerifyPhone;
@@ -76,6 +77,16 @@ class AuthController extends Controller
         $user->update(['otp' => $otp]);
 
         return $this->getResponse(200, __('Otp Sent successfully'));
+    }
+
+    function checkCode(CheckCode $request) {
+        $user = $this->checkOtp($request->phone, $request->phone_code, $request->otp);
+        $status= true;
+        if (!$user) {
+            $status = false;
+            return $this->getResponse(200, __('Request successfully'), ['status'=>$status]);
+        }
+        return $this->getResponse(200, __('Request successfully'), ['status'=>$status]);
     }
 
     /**
@@ -236,6 +247,11 @@ class AuthController extends Controller
     private function attemptLoginOtp($phone, $phoneCode, $otp)
     {
         return User::where(['phone' => $phone, 'phone_code' => $phoneCode, 'otp' => $otp])->first();
+    }
+
+    private function checkOtp($phone, $phoneCode, $otp)
+    {
+        return User::where(['phone' => $phone, 'phone_code' => $phoneCode, 'forget_password_code' => $otp])->first();
     }
 
     private function updateUserOtp($user)
