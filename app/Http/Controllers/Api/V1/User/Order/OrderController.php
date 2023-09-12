@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api\V1\User\Order;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\User\Order\OrderRequest;
 use App\Http\Resources\Api\V1\User\Order\OrderResource;
+use App\Models\Driver;
+use App\Models\Package;
 use Illuminate\Http\Request;
+use DB;
 
 class OrderController extends Controller
 {
@@ -23,10 +26,29 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request)
     {
-        $order = auth('user')->user()->orders()->create($request->validated() + ['status' => 'pending']);
-        $order->address()->create($request->validated());
-        $order->details()->create($request->validated());
-        return $this->respondSuccess(OrderResource::make($order), 'Order Success!');
+        DB::beginTransaction();
+        try {
+            $order = auth('user')->user()->orders()->create($request->validated() + ['status' => 'pending']);
+
+            $package = Package::findOrFail($request->package_id);
+            $fare_price = $order->distance * $package->km_price;
+            $order->update(['fare_price' => $fare_price]);
+
+            $order->address()->create($request->validated());
+
+            if ($package->is_parcel) {
+                $order->details()->create($request->validated());
+            }
+
+            $this->notifyNearestDrivers($order);
+
+            DB::commit();
+            return $this->respondSuccess(OrderResource::make($order), 'Order Success!');
+        } catch (\Exception $exception) {
+            DB::rollback();
+            info($exception);
+            return $this->respondInternalError('Oops Something went wrong!');
+        }
     }
 
     /**
@@ -56,5 +78,18 @@ class OrderController extends Controller
         $order = auth('user')->user()->orders()->findOrFail($id);
         $order->delete();
         return $this->respondSuccess();
+    }
+
+    public function notifyNearestDrivers($order)
+    {
+        $lat = $order->from['lat'];
+        $lng = $order->to['lng'];
+
+        $drivers = Driver::active()->whereHas('package', function ($q) use ($order) {
+            $q->where('package_id', $order->package_id);
+        })->nearest($lat, $lng)
+            ->get();
+
+        \Notification::send($drivers, new FCMNotification($fcm_data, ['database']));
     }
 }

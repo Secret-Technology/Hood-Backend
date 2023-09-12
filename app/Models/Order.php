@@ -40,6 +40,11 @@ class Order extends Model
         $this->attributes['google_route'] = json_encode($value, true);
     }
 
+    public function getGoogleRouteAttribute()
+    {
+        return json_decode($this->attributes['google_route'], true);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
