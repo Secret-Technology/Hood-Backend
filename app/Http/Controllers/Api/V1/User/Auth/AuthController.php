@@ -100,7 +100,7 @@ class AuthController extends Controller
         // Update user as active, verified, and clear OTP
         $this->updateUserAndLogin($user);
 
-        return ProfileResource::make($user)->additional(['status' => 'success', 'message' => __('Phone verification success.')]);
+        return ProfileResource::make($user)->additional(['status' => 200, 'message' => __('Phone verification success.')]);
     }
 
     /**
