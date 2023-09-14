@@ -45,6 +45,8 @@ class AuthController extends Controller
     public function complete_data(CompleteData $request)
     {
         $user = auth('user')->user();
+        $user['token'] = auth('user')->tokenById($user->id);
+
         if ($user->is_data_completed) {
             return $this->getResponse(200, __('Your Data already completed'), ProfileResource::make($user));
         }
