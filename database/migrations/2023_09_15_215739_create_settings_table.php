@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
+            $table->string('key');
+            $table->string('value');
+            $table->boolean('active')->nullable()->default(true);
+            $table->string('file')->nullable();
+            $table->foreignId('admin_id')->nullable()->references('id')->on('admins')->onDelete('cascade');
             $table->timestamps();
         });
     }
